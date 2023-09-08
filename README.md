@@ -1,4 +1,4 @@
-# AI-guided-coil-gun
+# AI Guided Coil Gun
 
 CSCE 483 Capstone project.
 
