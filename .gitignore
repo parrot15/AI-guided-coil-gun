@@ -1,0 +1,15 @@
+# VSCode
+.vscode/
+
+# MacOS
+user-interface/.DS_Store
+
+# Frontend build directories
+user-interface/react-ui/node_modules/
+user-interface/react-ui/build/
+
+# Python virtual environment and build directories
+user-interface/api/.pyvenv/
+user-interface/api/__pycache__/
+gpu-server/.pyvenv/
+gpu-server/__pycache__/
