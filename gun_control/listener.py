@@ -26,9 +26,7 @@ def auto_aim(center_points):
     print(f'received coords: {coords}')
     gun.auto_aim_motors(coords)
 
-# @server_socket.on("camera-imagery")
 def camera_imagery(frame):
-    # print(frame.shape)
     image = Image.fromarray(frame.astype(np.uint8)).convert('RGB')
     buffer = io.BytesIO()
     image.save(buffer, format='JPEG', quality=100)

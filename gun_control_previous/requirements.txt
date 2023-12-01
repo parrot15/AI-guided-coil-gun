@@ -1,6 +1,0 @@
-pyserial
-Flask
-flask-socketio
-gevent
-picamera2
-numpy

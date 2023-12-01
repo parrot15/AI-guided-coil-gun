@@ -46,16 +46,6 @@ void loop() {
     digitalWrite(DIR_PIN2, HIGH);  // Set direction to down
     stepMotor(STEP_PIN2);
   }
-  
-//  digitalWrite(STEP_PIN1, HIGH);
-//  delayMicroseconds(1000);  // Adjust this delay to change speed
-//  digitalWrite(STEP_PIN1, LOW);
-//  delayMicroseconds(1000);
-//
-//  digitalWrite(STEP_PIN2, HIGH);
-//  delayMicroseconds(1000);
-//  digitalWrite(STEP_PIN2, LOW);
-//  delayMicroseconds(1000);
 }
 
 void stepMotor(int stepPin) {
@@ -64,19 +54,3 @@ void stepMotor(int stepPin) {
   digitalWrite(stepPin, LOW);
   delayMicroseconds(STEP_DELAY_US);
 }
-
-//void microstepMotor(int motor, int numMicrosteps) {
-//  for (int i = 0; i < numMicrosteps; ++i) {
-//    if (motor == MOTOR1) {
-//      digitalWrite(STEP_PIN1, HIGH);
-//      delayMicroseconds(STEP_DELAY_US);
-//      digitalWrite(STEP_PIN1, LOW);
-//      delayMicroseconds(STEP_DELAY_US);
-//    } else if (motor == MOTOR2) {
-//      digitalWrite(STEP_PIN2, HIGH);
-//      delayMicroseconds(STEP_DELAY_US);
-//      digitalWrite(STEP_PIN2, LOW);
-//      delayMicroseconds(STEP_DELAY_US);
-//    }
-//  }
-//}

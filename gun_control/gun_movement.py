@@ -1,9 +1,6 @@
 import time
 import serial
 
-# arduino = serial.Serial("/dev/cu.usbmodem1442301", 9600)
-# time.sleep(2)  # Wait for the serial connection to initialize.
-
 command_mappings = {
     "left": b"L",
     "right": b"R",
@@ -36,15 +33,11 @@ def move(direction):
     if direction not in command_mappings:
         raise ValueError("Invalid direction.")
     
-    if direction == command_mappings["stop"]:
-        pass
-    else:
+    if direction != command_mappings["stop"]:
         gun_movement.rotate_motors(command_mappings[direction])
 
 
 def auto_aim_motors(coords):
-    # Assuming coords is a list of (x, y) tuples
-    # For simplicity, let's aim at the first coordinate received
     if not coords:
         return
     

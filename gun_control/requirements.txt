@@ -1,7 +1,8 @@
-pyserial
 Flask
 flask-socketio
 gevent
-picamera2
 numpy
+pillow
+pyserial
 RPi.GPIO
+picamera2
