@@ -2,7 +2,7 @@
 .vscode/
 
 # MacOS
-user-interface/.DS_Store
+.DS_Store
 
 # Frontend build directories
 user-interface/react-ui/node_modules/
@@ -11,5 +11,13 @@ user-interface/react-ui/build/
 # Python virtual environment and build directories
 user-interface/api/.pyvenv/
 user-interface/api/__pycache__/
-gpu-server/.pyvenv/
-gpu-server/__pycache__/
+gun_control/.pyvenv/
+gun_control/pyvenv-backup/
+gun_control/__pycache__/
+object_detection/__pycache__/
+gpu-server-previous/.pyvenv/
+gpu-server-previous/__pycache__/
+
+# Weights file of Grounding DINO
+object_detection/GroundingDINO/data/
+object_detection/GroundingDINO/weights/groundingdino_swint_ogc.pth
