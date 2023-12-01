@@ -1,5 +1,0 @@
-RPi.GPIO
-Flask
-flask-socketio
-gevent
-numpy

@@ -20,7 +20,7 @@ raspberry_pi_socket.connect(config.get("Raspberry Pi", "url"), wait_timeout=10)
 
 # Connect to the GPU web socket server
 gpu_socket = socketio.Client()
-gpu_socket.connect(config.get("GPU", "url"))
+gpu_socket.connect(config.get("GPU", "url"), wait_timeout=10)
 
 # Initialize the FrameStreamer
 frame_streamer = FrameStreamer(server_socket, gpu_socket)
