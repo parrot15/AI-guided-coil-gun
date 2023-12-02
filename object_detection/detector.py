@@ -15,8 +15,8 @@ class Detector:
         original_image, image = self._load_frame(frame)
 
         # Do prediction.
-        BOX_THRESHOLD = 0.35
-        TEXT_THRESHOLD = 0.25
+        BOX_THRESHOLD = config.getfloat('Detection', 'box_threshold')
+        TEXT_THRESHOLD = config.getfloat('Detection', 'text_threshold')
         boxes, logits, phrases = predict(
             model=self.model,
             image=image,

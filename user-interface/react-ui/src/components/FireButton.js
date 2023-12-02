@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Button, Grid } from '@mui/material';
+import React from 'react';
+import { Button } from '@mui/material';
 import settings from '../settings/settings.json';
 
 const FireButton = ({ controlMode }) => {

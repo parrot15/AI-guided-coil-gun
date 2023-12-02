@@ -23,7 +23,7 @@ const SearchBar = ({ disabled }) => {
                 body: JSON.stringify({ prompt }),
             });
             const data = await response.json();
-            console.log(`response:\n${JSON.stringify(data)}`); // Handle the response as needed
+            console.log(`response:\n${JSON.stringify(data)}`);
         } catch (error) {
             console.error('Error sending prompt to backend:', error);
         }

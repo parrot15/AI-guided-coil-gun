@@ -28,4 +28,4 @@ def update_prompt():
     return {"message": f"Prompt updated to: {detector.prompt}"}
 
 if __name__ == "__main__":
-    server_socket.run(app, debug=False, host="0.0.0.0", port=5000)
+    server_socket.run(app, debug=config.getboolean('Server', 'debug'), host=config.get('Server', 'host'), port=config.getint('Server', 'port'))

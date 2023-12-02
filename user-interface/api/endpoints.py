@@ -1,13 +1,10 @@
-import base64
-from pprint import pprint
 from flask import Flask, request
 from flask_cors import CORS
-from parse_config_file import config
 from flask_socketio import SocketIO
 import socketio
 import requests
-from process_camera_imagery import process_frame, encode_frame
-from frame_streamer import FrameStreamer
+from parse_config_file import config
+from frame_utils import FrameStreamer, calculate_center_points
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = config.get("Server", "web_secret_key")
@@ -16,11 +13,11 @@ server_socket = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
 # Connect to the Raspberry Pi web socket server
 raspberry_pi_socket = socketio.Client()
-raspberry_pi_socket.connect(config.get("Raspberry Pi", "url"), wait_timeout=10)
+raspberry_pi_socket.connect(config.get("Raspberry Pi", "url"), wait_timeout=config.getint('Raspberry Pi', "connection_timeout"))
 
 # Connect to the GPU web socket server
 gpu_socket = socketio.Client()
-gpu_socket.connect(config.get("GPU", "url"), wait_timeout=10)
+gpu_socket.connect(config.get("GPU", "url"), wait_timeout=config.getint('GPU', "connection_timeout"))
 
 # Initialize the FrameStreamer
 frame_streamer = FrameStreamer(server_socket, gpu_socket)
@@ -36,14 +33,6 @@ def gun_movement(direction):
     raspberry_pi_socket.emit("gun-movement", direction)
 
 
-# @server_socket.on("user-input")
-# def user_input(input):
-#     filename = input + ".jpeg"
-#     with open(filename, "w") as f:
-#         f.write(base64.b64decode(curr_frame))
-#     # sendToGPU(filename)
-
-
 @raspberry_pi_socket.on("camera-imagery")
 def camera_imagery(frame):
     """
@@ -52,10 +41,6 @@ def camera_imagery(frame):
     the GPU server.
     :param frame: The frame data received from the Raspberry Pi
     """
-    # print(frame)
-
-    # server_socket.emit("camera-imagery", frame)
-    # gpu_socket.emit("camera-imagery", frame)
     frame_streamer.stream_camera_imagery(frame)
 
 
@@ -66,70 +51,26 @@ def object_detection(result):
     """
     detections = result["detections"]
     annotated_frame = result["annotatedFrame"]
-    print(detections)
-    print(annotated_frame[:5])
 
-    # Process detections to extract and sort center points by confidence
-    center_points = []
-    for detection in detections:
-        bbox = detection["bbox"]
-        confidence = detection["confidence"]
-
-        # Calculate center point
-        center_x = (bbox[0] + bbox[2]) / 2
-        center_y = (bbox[1] + bbox[3]) / 2
-        center_points.append((center_x, center_y, confidence))
-    print(f'center points: {center_points}')
-
-    # Sort center points by confidence
-    center_points.sort(key=lambda x: x[2], reverse=True)
-    print(f'center points sorted: {center_points}')
+    center_points = calculate_center_points(detections)
 
     # Send sorted center points to Pi
     raspberry_pi_socket.emit("gun-movement/auto-aim", {'centerPoints': center_points})
 
-    # # Process detections to calculate center points and sort by confidence
-    # centers = [(calculate_center(d["bbox"]), d["confidence"]) for d in detections]
-    # centers_sorted = sorted(centers, key=lambda x: x[1], reverse=True)  # Sort by confidence
-
-    # # Extract and send only the center points to the Raspberry Pi server
-    # centers_only = [center for center, _ in centers_sorted]
-    # raspberry_pi_socket.emit("object-centers", {"centers": centers_only})
-
     # Send annotated frame to frontend
-    frame_streamer.send_frame(annotated_frame)
-
-
-# def calculate_center(bbox):
-#     x_center = (bbox[0] + bbox[2]) / 2
-#     y_center = (bbox[1] + bbox[3]) / 2
-#     return x_center, y_center
+    frame_streamer.send_to_UI(annotated_frame)
 
 
 @app.route('/object-detection/prompt', methods=['POST'])
 def object_detection_prompt():
     prompt = request.json.get('prompt')
-    print(f"received prompt: \"{prompt}\"")
     frame_streamer.prompt = prompt
     response = requests.post(f'{config.get("GPU", "url")}/object-detection/prompt', json={'prompt': frame_streamer.prompt})
-    pprint(f'=== [prompt] response ===\n{response.json()}')
     return response.json()
-    # return {"prompt": prompt}
-
-    # response = requests.post(f'{config.get("GPU", "url")}/object-detection/prompt', json={'prompt': prompt})
-    # Actually, make frame_streamer handle it instead
-    # frame_streamer.prompt = prompt
 
 
 @app.route('/fire-projectile', methods=['POST'])
 def fire_projectile():
     control_mode = request.json.get('controlMode')
-    print(f"received control mode: {control_mode}")
     response = requests.post(f'{config.get("Raspberry Pi", "url")}/fire-projectile', json={'controlMode': control_mode})
-    pprint(f'=== [fire] response ===\n{response.json()}')
     return response.json()
-    # return {"controlMode": control_mode}
-
-# @gpu_socket.on('gpu-bounding-box')
-# def gpu_bounding_box(boundingBoxList):
-#     server_socket.emit('gpu-bounding-box', boundingBoxList)

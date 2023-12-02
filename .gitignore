@@ -12,11 +12,9 @@ user-interface/react-ui/build/
 user-interface/api/.pyvenv/
 user-interface/api/__pycache__/
 gun_control/.pyvenv/
-gun_control/pyvenv-backup/
 gun_control/__pycache__/
+object_detection/.pyvenv/
 object_detection/__pycache__/
-gpu-server-previous/.pyvenv/
-gpu-server-previous/__pycache__/
 
 # Weights file of Grounding DINO
 object_detection/GroundingDINO/data/

@@ -35,22 +35,29 @@ void loop() {
 
   if (command == 'L') {
     digitalWrite(DIR_PIN1, LOW);  // Set direction to left
-    stepMotor(STEP_PIN1);
+    moveMotor(STEP_PIN1);
   } else if (command == 'R') {
     digitalWrite(DIR_PIN1, HIGH);  // Set direction to right
-    stepMotor(STEP_PIN1);
+    moveMotor(STEP_PIN1);
   } else if (command == 'U') {
     digitalWrite(DIR_PIN2, LOW);  // Set direction to up
-    stepMotor(STEP_PIN2);
+    moveMotor(STEP_PIN2);
   } else if (command == 'D') {
     digitalWrite(DIR_PIN2, HIGH);  // Set direction to down
-    stepMotor(STEP_PIN2);
+    moveMotor(STEP_PIN2);
+  } else if (command == 'S') {
+    stopMotors();  // Stop the motors
   }
 }
 
-void stepMotor(int stepPin) {
+void moveMotor(int stepPin) {
   digitalWrite(stepPin, HIGH);
   delayMicroseconds(STEP_DELAY_US);
   digitalWrite(stepPin, LOW);
   delayMicroseconds(STEP_DELAY_US);
+}
+
+void stopMotors() {
+  digitalWrite(STEP_PIN1, LOW);
+  digitalWrite(STEP_PIN2, LOW);
 }

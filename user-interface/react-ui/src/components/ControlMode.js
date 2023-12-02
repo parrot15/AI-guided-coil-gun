@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import React from 'react';
+import { FormControl, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 
 const ControlMode = ({mode, setMode}) => {
     const handleModeChange = (event) => {
