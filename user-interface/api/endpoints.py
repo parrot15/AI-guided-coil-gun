@@ -29,7 +29,6 @@ def gun_movement(direction):
     Handles the "gun-movement" event and forwards it to the Raspberry Pi.
     :param direction: Direction to move the gun ('left', 'right', or 'stop')
     """
-    print(f"Sending direction: {direction}")
     raspberry_pi_socket.emit("gun-movement", direction)
 
 
