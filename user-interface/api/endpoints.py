@@ -27,7 +27,8 @@ frame_streamer = FrameStreamer(server_socket, gpu_socket)
 def gun_movement(direction):
     """
     Handles the "gun-movement" event and forwards it to the Raspberry Pi.
-    :param direction: Direction to move the gun ('left', 'right', or 'stop')
+    :param direction: Direction to move the gun ('left', 'right', 'up', 
+                      'down', 'stop').
     """
     raspberry_pi_socket.emit("gun-movement", direction)
 
@@ -35,10 +36,9 @@ def gun_movement(direction):
 @raspberry_pi_socket.on("camera-imagery")
 def camera_imagery(frame):
     """
-    Handles the "camera-imagery" event from the Raspberry Pi, processes 
-    the frame, and emits the processed frame data to the frontend and 
-    the GPU server.
-    :param frame: The frame data received from the Raspberry Pi
+    Handles the "camera-imagery" event from the Raspberry Pi, and forwards
+    the frame (still as bytes) to the frame streamer.
+    :param frame: The frame data received from the Raspberry Pi.
     """
     frame_streamer.stream_camera_imagery(frame)
 
@@ -46,7 +46,11 @@ def camera_imagery(frame):
 @gpu_socket.on('object-detection')
 def object_detection(result):
     """
-    [{'bbox': [0.5119307637214661, 0.6944025754928589, 0.08959539979696274, 0.31756800413131714], 'label': 'water bottle', 'confidence': 0.6070525646209717}, {'bbox': [0.6543914079666138, 0.692597508430481, 0.08025311678647995, 0.3114539682865143], 'label': 'water bottle', 'confidence': 0.4869263768196106}]
+    Handles the "object-detection" event from the GPU server. Processes the 
+    detections, sends the coordinates to the Pi, and sends the annotated 
+    frame to the UI.
+    :param result: The object detection results including detections and the 
+                   annotated frame.
     """
     detections = result["detections"]
     annotated_frame = result["annotatedFrame"]
@@ -62,6 +66,11 @@ def object_detection(result):
 
 @app.route('/object-detection/prompt', methods=['POST'])
 def object_detection_prompt():
+    """
+    Handles POST request to update the object detection prompt. Forwards the 
+    prompt to the GPU server.
+    :return: JSON response from the GPU server.
+    """
     prompt = request.json.get('prompt')
     frame_streamer.prompt = prompt
     response = requests.post(f'{config.get("GPU", "url")}/object-detection/prompt', json={'prompt': frame_streamer.prompt})
@@ -70,6 +79,11 @@ def object_detection_prompt():
 
 @app.route('/fire-projectile', methods=['POST'])
 def fire_projectile():
+    """
+    Handles POST request to trigger the firing mechanism. Forwards the control 
+    mode to the Raspberry Pi server.
+    :return: JSON response from the Raspberry Pi server.
+    """
     control_mode = request.json.get('controlMode')
     response = requests.post(f'{config.get("Raspberry Pi", "url")}/fire-projectile', json={'controlMode': control_mode})
     return response.json()

@@ -16,6 +16,12 @@ detector = Detector()
 
 @server_socket.on("camera-imagery")
 def object_detection(frame):
+    """
+    Handles the 'camera-imagery' event, processes the frame for object 
+    detection, and emits the results, consisting of the detections and 
+    annotated frame (as bytes).
+    :param frame: The frame data received for object detection.
+    """
     detections, annotated_frame = detector.detect(frame)
     _, buffer = cv2.imencode(".jpg", annotated_frame)
     byte_data = buffer.tobytes()
@@ -24,6 +30,10 @@ def object_detection(frame):
 
 @app.route('/object-detection/prompt', methods=['POST'])
 def update_prompt():
+    """
+    Updates the prompt used for object detection.
+    :return: A JSON response confirming the prompt update.
+    """
     detector.prompt = request.json.get('prompt')
     return {"message": f"Prompt updated to: {detector.prompt}"}
 

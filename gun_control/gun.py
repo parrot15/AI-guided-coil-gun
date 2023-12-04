@@ -4,6 +4,9 @@ import RPi.GPIO as GPIO
 from parse_config_file import config
 
 class Gun:
+    """
+    Class for interfacing with the gun.
+    """
     INIT_DELAY = 2
     PROCESSING_DELAY = 0.01
     COMMAND_MAPPINGS = {
@@ -16,6 +19,9 @@ class Gun:
     COIL_PINS = [17, 27, 22, 23, 24]  # All 5 stages
 
     def __init__(self):
+        """
+        Initializes the instance with serial communication and GPIO setup.
+        """
         self.direction = None
 
         self.arduino = serial.Serial(config.get('Arduino', 'port'), config.get('Arduino', 'baudrate'))
@@ -29,6 +35,11 @@ class Gun:
 
 
     def move(self, direction):
+        """
+        Moves the gun in the specified direction.
+        :param direction: The direction to move the gun.
+        :raises ValueError: If an invalid direction is provided.
+        """
         if self.direction not in Gun.COMMAND_MAPPINGS:
             raise ValueError("Invalid direction.")
 
@@ -42,10 +53,17 @@ class Gun:
 
 
     def stop_movement(self):
+        """
+        Stops any ongoing movement of the gun.
+        """
         self.arduino.write(Gun.COMMAND_MAPPINGS["stop"])
 
 
     def auto_aim(self, coords):
+        """
+        Auto-aims the gun based on the provided coordinates.
+        :param coords: A list of coordinates (x, y) to aim at.
+        """
         if not coords:
             return
         
@@ -77,6 +95,9 @@ class Gun:
 
 
     def fire(self):
+        """
+        Triggers the gun's firing mechanism.
+        """
         try:
             for pin in Gun.COIL_PINS:
                 self._fire_coil(pin)
@@ -88,6 +109,10 @@ class Gun:
 
 
     def _fire_coil(self, pin):
+        """
+        Fires an individual coil in the gun.
+        :param pin: The GPIO pin associated with the coil.
+        """
         GPIO.output(pin, GPIO.HIGH)
         time.sleep(0.002)  # Adjust the duration as needed
         GPIO.output(pin, GPIO.LOW)
