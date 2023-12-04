@@ -2,7 +2,7 @@
 
 Capstone project.
 
-**Group Members**
+### Group Members
 
 Eashan Soni (team lead), Carson Aulbaugh, Gregory Manternach, Michael Pham
 
@@ -51,7 +51,7 @@ The project utilizes the following components:
 - 5x BJTs (coil gun triggering through GPIO of Pi)
 - Various safety diodes, resistors, wiring, perfboards, breadboards, etc.
 
-**Camera Streaming**
+### Camera Streaming
 
 The Raspberry Pi 4 is the main controller of the entire system. Real-time 
 imagery is captured by the camera, and the Pi streams this imagery to the 
@@ -60,7 +60,7 @@ and a Flask-based backend. Through websockets a real-time connection is
 established between the frontend, backend, and Pi. This enables the real-time 
 imagery to be displayed on the UI.
 
-**Object Detection**
+### Object Detection
 
 For object detection, the backend also simultaneuously streams the imagery 
 to the GPU server using websockets. This GPU server is a deep learning 
@@ -77,7 +77,7 @@ GPU server streams the detections back to the UI. The UI subsequently
 displays the detections to the user, and sends the detections to the Pi to 
 auto-aim (if in auto-aim mode).
 
-**Gun Movement**
+### Gun Movement
 
 The user can also control the movement of the gun manually using the WASD 
 keys. Movement commands are streamed in real-time from the UI to the Pi 
@@ -104,7 +104,7 @@ coordinate into how much to move the left/right motor and up/down motor.
 This required lots of fine-tuning as well. In the end, the auto-aiming is 
 approx. 90% accurate.
 
-**Coil Gun**
+### Coil Gun
 
 A coil gun fires projectiles by taking advantage of the Lorentz force. When 
 an electric current is induced through a coil, the coil becomes magnetic, 
