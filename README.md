@@ -3,8 +3,7 @@
 Capstone project.
 
 ### Group Members
-
-Eashan Soni (team lead), Carson Aulbaugh, Gregory Manternach, Michael Pham
+**Eashan Soni (team lead)**, Carson Aulbaugh, Gregory Manternach, Michael Pham
 
 We successfully designed an AI-controlled, auto-aiming coil gun. It uses AI 
 to detect any arbitrary object, and algorithms to autonomously aim the gun 
@@ -52,7 +51,6 @@ The project utilizes the following components:
 - Various safety diodes, resistors, wiring, perfboards, breadboards, etc.
 
 ### Camera Streaming
-
 The Raspberry Pi 4 is the main controller of the entire system. Real-time 
 imagery is captured by the camera, and the Pi streams this imagery to the 
 UI. The UI is a web-based interface that consists of a React-based frontend, 
@@ -61,7 +59,6 @@ established between the frontend, backend, and Pi. This enables the real-time
 imagery to be displayed on the UI.
 
 ### Object Detection
-
 For object detection, the backend also simultaneuously streams the imagery 
 to the GPU server using websockets. This GPU server is a deep learning 
 instance commissioned on AWS that hosts a multi-modal computer vision model 
@@ -78,7 +75,6 @@ displays the detections to the user, and sends the detections to the Pi to
 auto-aim (if in auto-aim mode).
 
 ### Gun Movement
-
 The user can also control the movement of the gun manually using the WASD 
 keys. Movement commands are streamed in real-time from the UI to the Pi 
 using websockets. When a movement command is received, the Pi sends a command 
@@ -105,7 +101,6 @@ This required lots of fine-tuning as well. In the end, the auto-aiming is
 approx. 90% accurate.
 
 ### Coil Gun
-
 A coil gun fires projectiles by taking advantage of the Lorentz force. When 
 an electric current is induced through a coil, the coil becomes magnetic, 
 pulling the projectile to the center of the coil. If the power to the coil 
