@@ -3,10 +3,12 @@ import serial
 import RPi.GPIO as GPIO
 from parse_config_file import config
 
+
 class Gun:
     """
     Class for interfacing with the gun.
     """
+
     INIT_DELAY = 2
     PROCESSING_DELAY = 0.01
     COMMAND_MAPPINGS = {
@@ -14,7 +16,7 @@ class Gun:
         "right": b"R",
         "up": b"U",
         "down": b"D",
-        "stop": b"S"
+        "stop": b"S",
     }
     COIL_PINS = [17, 27, 22, 23, 24]  # All 5 stages
 
@@ -24,7 +26,9 @@ class Gun:
         """
         self.direction = None
 
-        self.arduino = serial.Serial(config.get('Arduino', 'port'), config.get('Arduino', 'baudrate'))
+        self.arduino = serial.Serial(
+            config.get("Arduino", "port"), config.get("Arduino", "baudrate")
+        )
         # Wait for the serial connection to initialize.
         time.sleep(Gun.INIT_DELAY)
 
@@ -32,7 +36,6 @@ class Gun:
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)  # Use Broadcom pin numbering
         GPIO.setup(Gun.COIL_PINS, GPIO.OUT, initial=GPIO.LOW)
-
 
     def move(self, direction):
         """
@@ -51,13 +54,11 @@ class Gun:
                 self.arduino.write(Gun.COMMAND_MAPPINGS[direction])
                 time.sleep(Gun.PROCESSING_DELAY)
 
-
     def stop_movement(self):
         """
         Stops any ongoing movement of the gun.
         """
         self.arduino.write(Gun.COMMAND_MAPPINGS["stop"])
-
 
     def auto_aim(self, coords):
         """
@@ -66,10 +67,10 @@ class Gun:
         """
         if not coords:
             return
-        
+
         for coord in coords:
             target_x, target_y = coord
-            
+
             # Assuming 0.5, 0.5 is the center of the frame
             frame_center_x, frame_center_y = 0.5, 0.5
 
@@ -93,7 +94,6 @@ class Gun:
             elif diff_y < -threshold_y:
                 self.move("down")
 
-
     def fire(self):
         """
         Triggers the gun's firing mechanism.
@@ -106,7 +106,6 @@ class Gun:
         finally:
             # Reset the GPIO pins to a safe state
             GPIO.cleanup()
-
 
     def _fire_coil(self, pin):
         """

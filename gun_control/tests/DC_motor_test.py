@@ -15,10 +15,7 @@ GPIO.setup(IN2, GPIO.OUT)
 
 # Set up PWM for each motor
 pwm_frequency = 1000  # Change this to set the desired PWM frequency
-motor_pwm = [
-    GPIO.PWM(IN1, pwm_frequency),
-    GPIO.PWM(IN2, pwm_frequency)
-]
+motor_pwm = [GPIO.PWM(IN1, pwm_frequency), GPIO.PWM(IN2, pwm_frequency)]
 
 
 # Function to control motor direction and speed
@@ -47,7 +44,7 @@ def get_direction():
         if direction == "b":
             direction = "backward"
             break
-    
+
     return direction
 
 
@@ -58,9 +55,7 @@ if __name__ == "__main__":
             direction = get_direction()
 
             # Control the motor according to user input
-            control_motor(
-                direction, 100
-            )  # Change the speed value (0-100) as desired
+            control_motor(direction, 100)  # Change the speed value (0-100) as desired
             time.sleep(8)  # Change the duration of rotation as desired
 
             # Stop the motor

@@ -67,13 +67,18 @@ const GunMovement = ({ disabled }) => {
   }, [handleKeyDown, handleKeyUp]);
 
   return (
-    <Grid container spacing={5} alignItems="center" justifyContent="center"       
+    <Grid
+      container
+      spacing={5}
+      alignItems="center"
+      justifyContent="center"
       sx={{
-      position:'absolute',
-      height: 'auto',
-      width: 'auto',
-      top: '90%',
-    }}>
+        position: 'absolute',
+        height: 'auto',
+        width: 'auto',
+        top: '90%',
+      }}
+    >
       <Grid item>
         <Button
           onMouseDown={() => sendCommand('up')}

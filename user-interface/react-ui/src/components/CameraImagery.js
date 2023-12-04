@@ -22,7 +22,7 @@ const CameraImagery = () => {
     });
     return () => {
       // Clean up websocket
-      newSocket.close()
+      newSocket.close();
       // Clean up image URL object
       if (imageSrc) {
         URL.revokeObjectURL(imageSrc);
@@ -33,7 +33,7 @@ const CameraImagery = () => {
   return (
     <Box
       style={{
-        position:'absolute',
+        position: 'absolute',
         width: '70%',
         height: '70%',
         left: '50%',
@@ -41,7 +41,8 @@ const CameraImagery = () => {
         border: 'solid 2px black',
         justifyContent: 'center',
         overflow: 'hidden', // Add this line to prevent scroll bars if the image is larger than the box
-      }}>
+      }}
+    >
       {imageSrc && (
         <img
           src={imageSrc}

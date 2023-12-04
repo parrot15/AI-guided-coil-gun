@@ -2,10 +2,12 @@ import time
 import threading
 import picamera2
 
+
 class Camera:
     """
     Class for interfacing with the Camera V2 module.
     """
+
     PROCESSING_DELAY = 0.1
 
     def __init__(self):
@@ -14,7 +16,7 @@ class Camera:
         """
         self.camera = picamera2.Picamera2()
         self.camera.start()
-    
+
     def close(self):
         """
         Closes the camera interface.
@@ -30,7 +32,7 @@ class Camera:
         :return: The captured frame.
         """
         return self.camera.capture_array()
-    
+
     def stream(self, callback):
         while True:
             try:
@@ -40,14 +42,14 @@ class Camera:
                 self.close()
                 return
 
+
 camera = Camera()
+
 
 def start_stream(callback):
     """
     Starts a separate thread for streaming camera imagery.
     :param callback: The function to be called on each captured frame.
     """
-    camera_imagery_thread = threading.Thread(
-        target=camera.stream, args=(callback,)
-    )
+    camera_imagery_thread = threading.Thread(target=camera.stream, args=(callback,))
     camera_imagery_thread.start()

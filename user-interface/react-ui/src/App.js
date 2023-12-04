@@ -1,5 +1,5 @@
-import {React, useState} from 'react';
-import {Container, Grid } from '@mui/material';
+import { React, useState } from 'react';
+import { Container, Grid } from '@mui/material';
 import GunMovement from './components/GunMovement';
 import CameraImagery from './components/CameraImagery';
 import SearchBar from './components/SearchBar';

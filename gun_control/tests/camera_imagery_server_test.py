@@ -16,12 +16,14 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = config.get("Server", "web_secret_key")
 server_socket = SocketIO(app, cors_allowed_origins="*", async_mode="gevent")
 
+
 def camera_imagery(frame):
-    image = Image.fromarray(frame.astype(np.uint8)).convert('RGB')
+    image = Image.fromarray(frame.astype(np.uint8)).convert("RGB")
     buffer = io.BytesIO()
-    image.save(buffer, format='JPEG', quality=85)
+    image.save(buffer, format="JPEG", quality=85)
     byte_data = buffer.getvalue()
     server_socket.emit("camera-imagery", byte_data)
+
 
 def stream(callback):
     camera = picamera2.Picamera2()
@@ -37,9 +39,8 @@ def stream(callback):
             camera.close()
             return
 
-camera_imagery_thread = threading.Thread(
-    target=stream, args=(camera_imagery,)
-)
+
+camera_imagery_thread = threading.Thread(target=stream, args=(camera_imagery,))
 
 if __name__ == "__main__":
     camera_imagery_thread.start()
