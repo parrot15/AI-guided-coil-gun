@@ -1,0 +1,8 @@
+Flask
+flask-cors
+flask-socketio
+python-socketio
+gevent
+numpy
+opencv-python
+scikit-image
